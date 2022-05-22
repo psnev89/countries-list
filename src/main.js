@@ -1,4 +1,18 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
 
-createApp(App).mount('#app')
+// create app
+import App from "./App.vue";
+const app = createApp(App);
+
+// use bulma
+require("@/assets/main.scss");
+
+// use pinia
+import { createPinia } from "pinia";
+app.use(createPinia());
+
+// use http client
+const http = require("@/helpers/http");
+app.config.globalProperties.$httpClient = http;
+
+app.mount("#app");
