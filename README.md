@@ -1,4 +1,4 @@
-# contries-list
+# countries-list
 
 ## Project setup
 ```

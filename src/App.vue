@@ -1,26 +1,22 @@
-<template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-</template>
+<script setup>
+import { useCountryStore } from "@/modules/countries/store/countries.store";
+import { storeToRefs } from "pinia";
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+const { countries, loading, error } = storeToRefs(useCountryStore());
+const { getAllCountries } = useCountryStore();
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+getAllCountries();
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<template>
+  <main>
+    teste
+    <div v-if="loading">Loading</div>
+    <div v-else-if="error">{{ error }}</div>
+    <template v-else-if="countries">
+      <div v-for="country in countries" :key="country.cca3">
+        <p>{{ country.name }}</p>
+      </div>
+    </template>
+  </main>
+</template>
