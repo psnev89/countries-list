@@ -6,10 +6,9 @@ import { storeToRefs } from "pinia";
 import AppCard from "@/components/app/card/AppCard";
 import AppCardHeader from "@/components/app/card/AppCardHeader";
 import AppCardContent from "@/components/app/card/AppCardContent";
-import AppRow from "@/components/app/grid/AppRow";
-import AppColumn from "@/components/app/grid/AppColumn";
-import CountryListCard from "@/modules/countries/components/CountryListCard";
 import AppIcon from "@/components/app/icon/AppIcon";
+import CountryListFilters from "@/modules/countries/components/CountryListFilters";
+import CountryList from "@/modules/countries/components/CountryList";
 
 const { countries, loading, error } = storeToRefs(useCountryStore());
 const { getAllCountries } = useCountryStore();
@@ -26,19 +25,14 @@ getAllCountries();
       </h1>
     </AppCardHeader>
     <AppCardContent>
+      <CountryListFilters
+        :disabled="loading || error"
+        :loading="loading"
+      ></CountryListFilters>
       <div v-if="loading">Loading...</div>
       <div v-else-if="error">{{ error }}</div>
       <template v-else-if="countries">
-        <AppRow>
-          <AppColumn
-            :cols="2"
-            fluid
-            v-for="country in countries"
-            :key="country.cca3"
-          >
-            <CountryListCard :country="country"></CountryListCard>
-          </AppColumn>
-        </AppRow>
+        <CountryList :countries="countries"></CountryList>
       </template>
     </AppCardContent>
   </AppCard>
