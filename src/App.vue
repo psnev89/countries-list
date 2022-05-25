@@ -1,22 +1,13 @@
 <script setup>
-import { useCountryStore } from "@/modules/countries/store/countries.store";
-import { storeToRefs } from "pinia";
-
-const { countries, loading, error } = storeToRefs(useCountryStore());
-const { getAllCountries } = useCountryStore();
-
-getAllCountries();
+import CountriesView from "@/modules/countries/views/CountriesView";
 </script>
 
 <template>
   <main>
-    teste
-    <div v-if="loading">Loading</div>
-    <div v-else-if="error">{{ error }}</div>
-    <template v-else-if="countries">
-      <div v-for="country in countries" :key="country.cca3">
-        <p>{{ country.name }}</p>
+    <section class="section">
+      <div class="container">
+        <CountriesView></CountriesView>
       </div>
-    </template>
+    </section>
   </main>
 </template>
