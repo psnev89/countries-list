@@ -3,6 +3,7 @@
     <AppCardImage :src="country.flagImage"></AppCardImage>
     <AppCardContent style="border-top: 1px solid #e5e5e5">
       <p class="--country-name --text-truncated">{{ country.name }}</p>
+      <p class="--country-continents --text-truncated">{{ continents }}</p>
     </AppCardContent>
   </AppCard>
 </template>
@@ -22,11 +23,21 @@ export default {
       required: true,
     },
   },
+  computed: {
+    continents() {
+      return this.country.continents.join(", ");
+    },
+  },
 };
 </script>
 
 <style scoped lang="scss">
 .--country-name {
+  font-size: 12px;
+}
+
+.--country-continents {
+  color: #bbb;
   font-size: 12px;
 }
 
