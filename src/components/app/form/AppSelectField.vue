@@ -5,7 +5,13 @@
       <div :class="['select', { 'is-loading': loading }]">
         <select :disabled="disabled">
           <template v-if="hasOptions">
-            <option>teste</option>
+            <option
+              v-for="(option, i) in options"
+              :key="i"
+              :value="option.value != null ? option.value : option"
+            >
+              {{ option.text != null ? option.text : option }}
+            </option>
           </template>
           <option v-else disabled>No options available</option>
         </select>
