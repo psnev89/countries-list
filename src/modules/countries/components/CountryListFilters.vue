@@ -13,6 +13,7 @@
       <AppSelectField
         :disabled="disabled"
         :loading="loading"
+        :options="continentsOptions"
         label="Continent"
       ></AppSelectField>
     </AppColumn>
@@ -20,6 +21,7 @@
       <AppSelectField
         :disabled="disabled"
         :loading="loading"
+        :options="sortOptions"
         label="Sort By"
       ></AppSelectField>
     </AppColumn>
@@ -43,11 +45,37 @@ export default {
       type: Boolean,
       default: false,
     },
+    continents: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
       searchInput: "",
+      sortOptions: [
+        {
+          text: "Country name",
+          value: "name",
+        },
+        {
+          text: "Continent",
+          value: "continent",
+        },
+        {
+          text: "Population",
+          value: "population",
+        },
+      ],
     };
+  },
+  computed: {
+    continentsOptions() {
+      let arr = [];
+      if (!this.continents?.length) return arr;
+      arr.push({ text: "All", value: null });
+      return [...arr, ...this.continents.map((c) => ({ text: c, value: c }))];
+    },
   },
 };
 </script>

@@ -15,6 +15,14 @@ export const useCountryStore = defineStore("countries", {
     sortedCountries(state) {
       return state.countries.sort((a, b) => a.name.localeCompare(b.name));
     },
+    allContinents(state) {
+      return state.countries.reduce((continents, country) => {
+        country.continents.forEach((c) => {
+          if (!continents.includes(c)) continents.push(c);
+        });
+        return continents;
+      }, []);
+    },
   },
   actions: {
     async getAllCountries() {
