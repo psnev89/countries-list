@@ -6,15 +6,16 @@ const initialState = {
   country: null,
   loading: false,
   error: false,
+  filters: {
+    name: null,
+    continent: null,
+  },
 };
 
 export const useCountryStore = defineStore("countries", {
   id: "country",
   state: () => ({ ...initialState }),
   getters: {
-    sortedCountries(state) {
-      return state.countries.sort((a, b) => a.name.localeCompare(b.name));
-    },
     allContinents(state) {
       return state.countries.reduce((continents, country) => {
         country.continents.forEach((c) => {
@@ -22,6 +23,27 @@ export const useCountryStore = defineStore("countries", {
         });
         return continents;
       }, []);
+    },
+    getFiltersToBeApplied(state) {
+      const filterFuncs = [];
+      if (state.filters.name) {
+        filterFuncs.push((el) => el.name.toLowerCase().includes(state.filters.name.toLowerCase()));
+      }
+      if (state.filters.continent) {
+        filterFuncs.push((el) =>
+          el.continents.includes(state.filters.continent)
+        );
+      }
+      return filterFuncs;
+    },
+    getCountries(state) {
+      const filterFuncs = this.getFiltersToBeApplied;
+      return state.countries.filter((country) => {
+        if (filterFuncs.length) {
+          return filterFuncs.every((func) => func(country));
+        }
+        return country;
+      }).sort((a, b) => a.name.localeCompare(b.name));
     },
   },
   actions: {
@@ -33,6 +55,9 @@ export const useCountryStore = defineStore("countries", {
       this.countries = data;
       this.error = apiError;
       this.loading = false;
+    },
+    updateFilters(newFilters) {
+      this.filters = { ...newFilters };
     },
   },
 });

@@ -3,7 +3,11 @@
     <label v-if="label" class="label">{{ label }}</label>
     <div class="control">
       <div :class="['select', { 'is-loading': loading }]">
-        <select :disabled="disabled">
+        <select
+          :disabled="disabled"
+          @change="applySelection"
+          @input="applySelection"
+        >
           <template v-if="hasOptions">
             <option
               v-for="(option, i) in options"
@@ -38,6 +42,14 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    modelValue: {
+      required: false,
+    },
+  },
+  methods: {
+    applySelection($event) {
+      this.$emit("update:modelValue", $event?.target?.value);
     },
   },
   computed: {

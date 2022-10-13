@@ -1,8 +1,8 @@
 <template>
   <AppRow>
-    <AppColumn class="is-half">
+    <AppColumn>
       <AppInputField
-        v-model="searchInput"
+        v-model="inputs.name"
         :disabled="disabled"
         :loading="loading"
         label="Search"
@@ -11,18 +11,11 @@
     </AppColumn>
     <AppColumn>
       <AppSelectField
+        v-model="inputs.continent"
         :disabled="disabled"
         :loading="loading"
         :options="continentsOptions"
         label="Continent"
-      ></AppSelectField>
-    </AppColumn>
-    <AppColumn>
-      <AppSelectField
-        :disabled="disabled"
-        :loading="loading"
-        :options="sortOptions"
-        label="Sort By"
       ></AppSelectField>
     </AppColumn>
   </AppRow>
@@ -49,32 +42,37 @@ export default {
       type: Array,
       default: () => [],
     },
+    value: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
-      searchInput: "",
-      sortOptions: [
-        {
-          text: "Country name",
-          value: "name",
-        },
-        {
-          text: "Continent",
-          value: "continent",
-        },
-        {
-          text: "Population",
-          value: "population",
-        },
-      ],
+      inputs: {
+        name: null,
+        continent: null,
+      },
     };
   },
   computed: {
     continentsOptions() {
       let arr = [];
       if (!this.continents?.length) return arr;
-      arr.push({ text: "All", value: null });
+      arr.push({ text: "All", value: "" });
       return [...arr, ...this.continents.map((c) => ({ text: c, value: c }))];
+    },
+  },
+  mounted() {
+    this.inputs.continent = this.value.continent;
+    this.inputs.name = this.value.name;
+  },
+  watch: {
+    inputs: {
+      deep: true,
+      handler(value) {
+        this.$emit("filter", value);
+      },
     },
   },
 };

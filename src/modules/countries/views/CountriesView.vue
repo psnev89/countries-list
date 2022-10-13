@@ -10,10 +10,10 @@ import AppIcon from "@/components/app/icon/AppIcon";
 import CountryListFilters from "@/modules/countries/components/CountryListFilters";
 import CountryList from "@/modules/countries/components/CountryList";
 
-const { countries, loading, error, allContinents } = storeToRefs(
+const { loading, error, allContinents, filters ,getCountries} = storeToRefs(
   useCountryStore()
 );
-const { getAllCountries } = useCountryStore();
+const { getAllCountries, updateFilters } = useCountryStore();
 
 getAllCountries();
 </script>
@@ -31,11 +31,13 @@ getAllCountries();
         :disabled="loading || error"
         :loading="loading"
         :continents="allContinents"
+        :value="filters"
+        @filter="updateFilters"
       ></CountryListFilters>
       <div v-if="loading">Loading...</div>
       <div v-else-if="error">{{ error }}</div>
-      <template v-else-if="countries">
-        <CountryList :countries="countries"></CountryList>
+      <template v-else-if="getCountries">
+        <CountryList :countries="getCountries"></CountryList>
       </template>
     </AppCardContent>
   </AppCard>
